@@ -150,6 +150,8 @@ impl AudioBackendManager for CpalBackend {
             .default_output_config()
             .expect("InvalidStateError - error while querying device output config");
 
+        log::debug!("default device config: {default_device_config:?}");
+
         // we grab the largest number of channels provided by the soundcard
         // clamped to MAX_CHANNELS, this value cannot be changed by the user
         let number_of_channels = usize::from(default_device_config.channels()).min(MAX_CHANNELS);
@@ -177,7 +179,7 @@ impl AudioBackendManager for CpalBackend {
             SupportedBufferSize::Range { min, max } => buffer_size.clamp(*min, *max),
         };
 
-        preferred_config.buffer_size = cpal::BufferSize::Fixed(clamped_buffer_size);
+        // preferred_config.buffer_size = cpal::BufferSize::Fixed(clamped_buffer_size);
 
         // report the picked sample rate to the render thread, i.e. if the requested
         // sample rate is not supported by the hardware, it will fallback to the
