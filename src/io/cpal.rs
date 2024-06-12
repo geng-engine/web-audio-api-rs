@@ -172,12 +172,12 @@ impl AudioBackendManager for CpalBackend {
             preferred_config.sample_rate.0 as f32,
         ) as u32;
 
-        let clamped_buffer_size: u32 = match default_device_config.buffer_size() {
-            SupportedBufferSize::Unknown => buffer_size,
-            SupportedBufferSize::Range { min, max } => buffer_size.clamp(*min, *max),
-        };
+        // let clamped_buffer_size: u32 = match default_device_config.buffer_size() {
+        //     SupportedBufferSize::Unknown => buffer_size,
+        //     SupportedBufferSize::Range { min, max } => buffer_size.clamp(*min, *max),
+        // };
 
-        preferred_config.buffer_size = cpal::BufferSize::Fixed(clamped_buffer_size);
+        preferred_config.buffer_size = cpal::BufferSize::Fixed(buffer_size);
 
         // report the picked sample rate to the render thread, i.e. if the requested
         // sample rate is not supported by the hardware, it will fallback to the
